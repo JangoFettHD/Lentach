@@ -68,38 +68,74 @@
                 android:paddingLeft="15dp"
                 android:layout_weight="1"
                 android:textSize="15dp"
-                android:textColor="#282828"
+                android:textColor="#b2b2b2"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true" />
 
-            <ImageButton
-                android:id="@+id/repost"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:background="#00ffffff"
-                android:padding="12dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/superrepost"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="9dp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/time"
+                android:layout_toStartOf="@+id/time"
+                android:id="@+id/button_reposts">
 
-            <ImageButton
-                android:id="@+id/like"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:background="#00ffffff"
-                android:padding="12dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/superlike"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="9dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="52"
+                    android:id="@+id/countReposts"
+                    android:textColor="#b2b2b2"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/repost"
+                    android:layout_toEndOf="@+id/repost" />
+
+                <ImageButton
+                    android:id="@+id/repost"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="#00ffffff"
+                    android:padding="12dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/next"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="9dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/time"
+                android:layout_toEndOf="@+id/time"
+                android:id="@+id/button_likes">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1256"
+                    android:id="@+id/countLikes"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="21dp"
+                    android:textColor="#b2b2b2" />
+
+                <ImageButton
+                    android:id="@+id/like"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="#00ffffff"
+                    android:padding="12dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/heart"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@+id/countLikes"
+                    android:layout_toStartOf="@+id/countLikes" />
+            </RelativeLayout>
+
         </RelativeLayout>
 
     </LinearLayout>

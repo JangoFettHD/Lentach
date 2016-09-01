@@ -3,6 +3,7 @@ package me.jangofetthd.lentach;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +13,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.vk.sdk.api.VKError;
+import com.vk.sdk.api.VKParameters;
+import com.vk.sdk.api.VKRequest;
+import com.vk.sdk.api.VKResponse;
 import com.vk.sdk.api.model.VKApiAudio;
 import com.vk.sdk.api.model.VKApiDocument;
 import com.vk.sdk.api.model.VKApiPhoto;
@@ -22,12 +28,18 @@ import com.vk.sdk.api.model.VKApiPost;
 import com.vk.sdk.api.model.VKApiVideo;
 import com.vk.sdk.api.model.VKAttachments;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class NewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<NewsFeedRecyclerViewAdapter.ViewHolder> {
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
+
+public class NewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<NewsFeedRecyclerViewAdapter.ViewHolder> implements View.OnClickListener {
 
     private List<VKApiPost> posts;
     Context context;
@@ -54,9 +66,17 @@ public class NewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<NewsFeedRe
         } else {
             holder.pText.setVisibility(View.GONE);
         }
+
+        //new
+        holder.countLikes.setText(Integer.toString(post.likes_count));
+        holder.countReposts.setText(Integer.toString(post.reposts_count));
+
+        holder.button_likes.setOnClickListener(this);
+        holder.button_likes.setTag(Integer.toString(position));
+
         long time = post.date * (long) 1000;
         Date date = new Date(time);
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss dd.MM.YY");
+        SimpleDateFormat format = new SimpleDateFormat();//"HH:mm:ss dd.MM.YY"); //@TODO TIME FOR SAMSUNG
         holder.pTime.setText(format.format(date).toString());
 
         List<String> photos = new ArrayList<>(),
@@ -119,10 +139,40 @@ public class NewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<NewsFeedRe
         return posts.size();
     }
 
+    @Override
+    public void onClick(final View view) {
+        if (view.getId() == R.id.button_likes) {
+            final VKApiPost post = posts.get(Integer.parseInt((String) view.getTag()));
+
+            VKParameters parameters = new VKParameters();
+            parameters.put("type", "post");
+            parameters.put("owner_id", Integer.toString(post.from_id));
+            parameters.put("item_id", Integer.toString(post.id));
+
+            final VKRequest request = new VKRequest("likes.add", parameters);
+            request.executeWithListener(new VKRequest.VKRequestListener() {
+                @Override
+                public void onComplete(VKResponse response) {
+                    super.onComplete(response);
+
+                    TextView likes_count = (TextView) view.findViewById(R.id.countLikes);
+                    likes_count.setText(Integer.toString(post.likes_count));
+                }
+
+                @Override
+                public void onError(VKError error) {
+                    super.onError(error);
+                }
+            });
+        }
+    }
+
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView pText;
         private TextView pTime;
+        private TextView countReposts;
+        private TextView countLikes;
         private HorizontalScrollView pImagesScroll;
         private HorizontalScrollView pGifsScroll;
         private RecyclerView pAudiosRecyclerView;
@@ -130,11 +180,14 @@ public class NewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<NewsFeedRe
         private ImageButton pRepost;
         private LinearLayout llPhotos;
         private LinearLayout llDocs;
+        private RelativeLayout button_likes;
 
         public ViewHolder(View itemView) {
             super(itemView);
             pText = (TextView) itemView.findViewById(R.id.text);
             pTime = (TextView) itemView.findViewById(R.id.time);
+            countReposts = (TextView) itemView.findViewById(R.id.countReposts);
+            countLikes = (TextView) itemView.findViewById(R.id.countLikes);
             pImagesScroll = (HorizontalScrollView) itemView.findViewById(R.id.photos);
             pGifsScroll = (HorizontalScrollView) itemView.findViewById(R.id.gifs);
             pAudiosRecyclerView = (RecyclerView) itemView.findViewById(R.id.audios);
@@ -142,7 +195,7 @@ public class NewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<NewsFeedRe
             pRepost = (ImageButton) itemView.findViewById(R.id.repost);
             llPhotos = (LinearLayout) itemView.findViewById(R.id.llphotos);
             llDocs = (LinearLayout) itemView.findViewById(R.id.llgifs);
-
+            button_likes = (RelativeLayout) itemView.findViewById(R.id.button_likes);
         }
     }
 
