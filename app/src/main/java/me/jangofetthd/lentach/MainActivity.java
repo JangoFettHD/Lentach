@@ -1,28 +1,28 @@
 package me.jangofetthd.lentach;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.media.Image;
+import android.content.ServiceConnection;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.util.ArrayMap;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.os.IBinder;
 import android.support.design.widget.NavigationView;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.vk.sdk.VKAccessToken;
@@ -33,25 +33,21 @@ import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
-import com.vk.sdk.api.methods.VKApiUsers;
-import com.vk.sdk.api.model.VKApiOwner;
+import com.vk.sdk.api.model.VKApiAudio;
 import com.vk.sdk.api.model.VKApiPost;
-import com.vk.sdk.api.model.VKApiUser;
-import com.vk.sdk.api.model.VKApiUserFull;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import me.jangofetthd.lentach.Services.MusicService;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -60,6 +56,12 @@ public class MainActivity extends AppCompatActivity
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefresh;
     NavigationView navigationView;
+
+    MusicService musicService;
+    private Intent playIntent;
+    private boolean musicBound = false;
+
+    ArrayList<VKApiAudio> vkAudios = new ArrayList<>();
 
 
     @Override
@@ -86,13 +88,7 @@ public class MainActivity extends AppCompatActivity
 
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
 
-        swipeRefresh.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        vkBackgroundLoading();
-                    }
-                });
+        swipeRefresh.setOnRefreshListener(this::vkBackgroundLoading);
 
         //Posts
         recyclerView = (RecyclerView) findViewById(R.id.feedview);
@@ -105,6 +101,15 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setAdapter(adapter);
 
         vkBackgroundLoading();
+
+        /**
+         * Service starting
+         */
+        if (playIntent == null) {
+            playIntent = new Intent(this, MusicService.class);
+            bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
+            startService(playIntent);
+        }
     }
 
     @Override
@@ -118,6 +123,13 @@ public class MainActivity extends AppCompatActivity
             //vk.setText("Войти");
             navigationView.getMenu().getItem(1).getSubMenu().getItem(0).setTitle("Войти");
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopService(playIntent);
+        musicService = null;
+        super.onDestroy();
     }
 
     @Override
@@ -339,5 +351,23 @@ public class MainActivity extends AppCompatActivity
             return (int) (second.date - first.date);
         }
     }
+
+    /**
+     * Connection to service
+     */
+    private ServiceConnection musicConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            MusicService.MusicBinder binder = (MusicService.MusicBinder) iBinder;
+            musicService = binder.getService();
+            musicService.setList(vkAudios);
+            musicBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            musicBound = false;
+        }
+    };
 
 }

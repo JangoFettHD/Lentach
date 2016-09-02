@@ -13,8 +13,6 @@ import com.vk.sdk.api.model.VKApiAudio;
 
 import java.util.List;
 
-import me.jangofetthd.lentach.Utility.MusicPlayer;
-
 /**
  * Created by JangoFettHD on 31.08.2016.
  */
@@ -40,21 +38,29 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
         final VKApiAudio audio = audios.get(position);
 
         holder.mPlay.setImageResource(R.drawable.play);
-        holder.mTitle.setText(audio.artist+" - "+audio.title);
-        holder.mTime.setText(audio.duration/60+":"+audio.duration%60);
-        holder.mPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    MusicPlayer.with(context)
-                            .load(audio.url)
-                            .withDuration(audio.duration*1000)
-                            .withSeekBar(holder.mSeekBar)
-                            .withTimeField(holder.mTime)
-                            .play();
-                } catch (Exception e) {
-                    e.printStackTrace();
+        holder.mTitle.setText(audio.artist + " - " + audio.title);
+        holder.mTime.setText(audio.duration / 60 + ":" + audio.duration % 60);
+        holder.mPlay.setOnClickListener(view -> {
+            try {
+                MainActivity activity = (MainActivity) context;
+                if (activity.vkAudios.size() == 0 || activity.musicService.getPlayingSong().getId() != audio.getId()) {
+                    activity.vkAudios.clear();
+                    activity.vkAudios.add(audio);
+                    activity.musicService.setSong(0);
+                    activity.musicService.playSong();
+                    holder.mPlay.setImageResource(R.drawable.pause);
+                } else {
+                    if (activity.musicService.isPlaying()) {
+                        activity.musicService.pause();
+                        holder.mPlay.setImageResource(R.drawable.play);
+                    } else {
+                        activity.musicService.resume();
+                        holder.mPlay.setImageResource(R.drawable.pause);
+                    }
                 }
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
