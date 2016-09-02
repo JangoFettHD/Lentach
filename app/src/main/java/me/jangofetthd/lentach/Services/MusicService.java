@@ -34,6 +34,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private final IBinder musicBind = new MusicBinder();
 
 
+    private TimeSynchronizationHandler timeHandler;
+
     //---------------------------
 
     @Override
@@ -69,7 +71,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
-        mediaPlayer.start();
+        resume();
     }
 
     //-----------------------------------
@@ -99,11 +101,20 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     }
 
     public void resume() {
+        if (timeHandler != null){
+            timeHandler.OnTimePlayerSynchronizationHandler(player.getCurrentPosition()/1000, player.getDuration()/1000);
+        }
         player.start();
     }
 
     public VKApiAudio getPlayingSong() {
         return songs.get(songPos);
+    }
+
+    public void setProgress(int progress) {
+        if (player.isPlaying()) {
+            player.seekTo(progress*1000);
+        }
     }
 
     public void initMusicPlayer() {
@@ -123,5 +134,15 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         public MusicService getService() {
             return MusicService.this;
         }
+    }
+
+    public void setTimeSynchronizationHandler(TimeSynchronizationHandler timeHandler) {
+        this.timeHandler = timeHandler;
+    }
+
+    //----------------------------
+
+    interface TimeSynchronizationHandler {
+        void OnTimePlayerSynchronizationHandler(int songTimePosition, int songDuration);
     }
 }
