@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -29,7 +30,7 @@ public class AudioPlayerActivity  extends AppCompatActivity
     NavigationView navigationView;
     ImageView apAlbumImage;
     SeekBar apSeekBar;
-    TextView apTitle, apArtist, apCurrentTime;
+    TextView apTitle, apArtist, apCurrentTime, apDuration;
     ImageButton apPlay, apPrev, apNext;
 
     MusicService service;
@@ -61,6 +62,7 @@ public class AudioPlayerActivity  extends AppCompatActivity
         apSeekBar = (SeekBar) findViewById(R.id.apSeekBar);
         apTitle = (TextView) findViewById(R.id.apTitle);
         apArtist = (TextView) findViewById(R.id.apArtist);
+        apDuration = (TextView) findViewById(R.id.apTime);
         apCurrentTime = (TextView) findViewById(R.id.apTimeCurrent);
         apPlay = (ImageButton) findViewById(R.id.apPlay);
         apPrev = (ImageButton) findViewById(R.id.apPrev);
@@ -80,6 +82,13 @@ public class AudioPlayerActivity  extends AppCompatActivity
         if (song.getId() != 0){
             setInterface(song);
         }
+
+        apDuration.setText(String.format(Locale.ENGLISH, "%d:%d", song.duration/60, song.duration%60));
+
+        apSeekBar.setOnTouchListener((view, motionEvent) -> {
+            service.setProgress(apSeekBar.getProgress(), true);
+            return false;
+        });
 
         service.setOnSchelduedUpdatesHandler((songPosition, songDuration) -> {
             apCurrentTime.setText(String.format(Locale.ENGLISH, "%d:%d", songPosition/60, songPosition%60));
