@@ -30,6 +30,34 @@
             android:layout_margin="10dp"
             android:indeterminate="false" />
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="00:00"
+                android:id="@+id/apCurrentTime"
+                android:layout_gravity="right"
+                android:layout_marginLeft="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="04:25"
+                android:id="@+id/apTime"
+                android:layout_gravity="right"
+                android:layout_alignBaseline="@+id/apCurrentTime"
+                android:layout_alignBottom="@+id/apCurrentTime"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp" />
+        </RelativeLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,7 +65,8 @@
             android:id="@+id/apArtist"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:layout_marginTop="-15dp" />
 
         <TextView
             android:layout_width="wrap_content"
