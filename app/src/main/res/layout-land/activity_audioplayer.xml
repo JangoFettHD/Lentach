@@ -33,8 +33,12 @@
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_above="@+id/relativeLayout">
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_above="@+id/linearLayout2"
+                    android:gravity="center">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -44,13 +48,15 @@
                         android:layout_gravity="center_horizontal"
                         android:gravity="center"
                         android:textSize="20dp"
-                        android:layout_marginTop="15dp" />
+                        android:layout_marginTop="15dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Talk Anymore - Charlie Puth &amp; Selena Gomez (Kyle Meehan x Xero x Kyle Dockery Extended Bootleg)"
-                        android:id="@+id/apName"
+                        android:id="@+id/apTitle"
                         android:layout_gravity="center_horizontal"
                         android:gravity="center"
                         android:singleLine="false"
@@ -58,65 +64,66 @@
                         android:nestedScrollingEnabled="true"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="20dp"
-                        android:layout_marginLeft="20dp" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginBottom="15dp" />
 
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="15dp"
-                        android:gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp" >
+                </LinearLayout>
 
-                        <ImageButton
-                            android:layout_width="30dp"
-                            android:layout_height="25dp"
-                            android:id="@+id/apAdd"
-                            android:layout_weight="1"
-                            android:src="@drawable/add"
-                            android:background="#00ffffff"
-                            android:scaleType="fitCenter" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:id="@+id/linearLayout2"
+                    android:layout_above="@+id/relativeLayout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true">
 
-                        <ImageButton
-                            android:layout_width="60dp"
-                            android:layout_height="40dp"
-                            android:id="@+id/apPrev"
-                            android:layout_weight="1"
-                            android:src="@drawable/rewind"
-                            android:background="#00ffffff"
-                            android:scaleType="fitCenter" />
+                    <ImageButton
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/apAdd"
+                        android:layout_weight="1"
+                        android:src="@drawable/add"
+                        android:background="#00ffffff"
+                        android:scaleType="fitCenter" />
 
-                        <ImageButton
-                            android:layout_width="60dp"
-                            android:layout_height="40dp"
-                            android:id="@+id/apPlay"
-                            android:layout_weight="1"
-                            android:src="@drawable/play"
-                            android:background="#00ffffff"
-                            android:scaleType="fitCenter" />
+                    <ImageButton
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/apPrev"
+                        android:layout_weight="1"
+                        android:src="@drawable/rewind"
+                        android:background="#00ffffff"
+                        android:scaleType="fitCenter" />
 
-                        <ImageButton
-                            android:layout_width="60dp"
-                            android:layout_height="40dp"
-                            android:id="@+id/apNext"
-                            android:layout_weight="1"
-                            android:src="@drawable/rewind_b"
-                            android:background="#00ffffff"
-                            android:scaleType="fitCenter" />
+                    <ImageButton
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/apPlay"
+                        android:layout_weight="1"
+                        android:src="@drawable/play"
+                        android:background="#00ffffff"
+                        android:scaleType="fitCenter" />
 
-                        <ImageButton
-                            android:layout_width="30dp"
-                            android:layout_height="25dp"
-                            android:id="@+id/apRepeat"
-                            android:layout_weight="1"
-                            android:src="@drawable/repeat"
-                            android:background="#00ffffff"
-                            android:scaleType="fitCenter" />
-                    </LinearLayout>
+                    <ImageButton
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/apNext"
+                        android:layout_weight="1"
+                        android:src="@drawable/rewind_b"
+                        android:background="#00ffffff"
+                        android:scaleType="fitCenter" />
 
+                    <ImageButton
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/apRepeat"
+                        android:layout_weight="1"
+                        android:src="@drawable/repeat"
+                        android:background="#00ffffff"
+                        android:scaleType="fitCenter" />
                 </LinearLayout>
 
                 <RelativeLayout
@@ -139,7 +146,7 @@
                             android:text="00:00"
                             android:id="@+id/textView"
                             android:layout_gravity="right"
-                            android:layout_marginLeft="20dp" />
+                            android:layout_marginLeft="10dp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -152,8 +159,8 @@
                             android:layout_alignBottom="@+id/textView"
                             android:layout_alignParentRight="true"
                             android:layout_alignParentEnd="false"
-                            android:layout_marginRight="20dp"
-                            android:layout_marginEnd="20dp" />
+                            android:layout_marginRight="10dp"
+                            android:layout_marginEnd="10dp" />
                     </RelativeLayout>
 
                     <SeekBar

@@ -3,141 +3,183 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:weightSum="1">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/apImage"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/mini_audio"
-                android:scaleType="centerCrop" />
-        </FrameLayout>
-
-        <SeekBar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/apSeekBar"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:indeterminate="false" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="00:00"
-                android:id="@+id/apCurrentTime"
-                android:layout_gravity="right"
-                android:layout_marginLeft="20dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="04:25"
-                android:id="@+id/apTime"
-                android:layout_gravity="right"
-                android:layout_alignBaseline="@+id/apCurrentTime"
-                android:layout_alignBottom="@+id/apCurrentTime"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="20dp"
-                android:layout_marginEnd="20dp" />
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Xero"
-            android:id="@+id/apArtist"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:textSize="20dp"
-            android:layout_marginTop="-15dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Talk Anymore - Charlie Puth &amp; Selena Gomez (Kyle Meehan x Xero x Kyle Dockery Extended Bootleg)"
-            android:id="@+id/apName"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:singleLine="false"
-            android:maxLines="2"
-            android:nestedScrollingEnabled="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp" />
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="15dp"
-            android:gravity="center"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+            android:layout_height="match_parent"
+            android:weightSum="1"
+            android:layout_gravity="center_horizontal">
 
-            <ImageButton
-                android:layout_width="30dp"
-                android:layout_height="25dp"
-                android:id="@+id/apAdd"
-                android:layout_weight="1"
-                android:src="@drawable/add"
-                android:background="#00ffffff"
-                android:scaleType="fitCenter" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
 
-            <ImageButton
-                android:layout_width="60dp"
-                android:layout_height="40dp"
-                android:id="@+id/apPrev"
-                android:layout_weight="1"
-                android:src="@drawable/rewind"
-                android:background="#00ffffff"
-                android:scaleType="fitCenter" />
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/apImage"
+                    android:src="@drawable/mini_audio"
+                    android:scaleType="centerCrop" />
+            </FrameLayout>
 
-            <ImageButton
-                android:layout_width="60dp"
-                android:layout_height="40dp"
-                android:id="@+id/apPlay"
-                android:layout_weight="1"
-                android:src="@drawable/play"
-                android:background="#00ffffff"
-                android:scaleType="fitCenter" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <ImageButton
-                android:layout_width="60dp"
-                android:layout_height="40dp"
-                android:id="@+id/apNext"
-                android:layout_weight="1"
-                android:src="@drawable/rewind_b"
-                android:background="#00ffffff"
-                android:scaleType="fitCenter" />
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_above="@+id/linearLayout2"
+                    android:gravity="center">
 
-            <ImageButton
-                android:layout_width="30dp"
-                android:layout_height="25dp"
-                android:id="@+id/apRepeat"
-                android:layout_weight="1"
-                android:src="@drawable/repeat"
-                android:background="#00ffffff"
-                android:scaleType="fitCenter" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Xero"
+                        android:id="@+id/apArtist"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:textSize="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Talk Anymore - Charlie Puth &amp; Selena Gomez (Kyle Meehan x Xero x Kyle Dockery Extended Bootleg)"
+                        android:id="@+id/apTitle"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:singleLine="false"
+                        android:maxLines="2"
+                        android:nestedScrollingEnabled="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginBottom="15dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:id="@+id/linearLayout2"
+                    android:layout_above="@+id/relativeLayout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true">
+
+                    <ImageButton
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/apAdd"
+                        android:layout_weight="1"
+                        android:src="@drawable/add"
+                        android:background="#00ffffff"
+                        android:scaleType="fitCenter" />
+
+                    <ImageButton
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/apPrev"
+                        android:layout_weight="1"
+                        android:src="@drawable/rewind"
+                        android:background="#00ffffff"
+                        android:scaleType="fitCenter" />
+
+                    <ImageButton
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/apPlay"
+                        android:layout_weight="1"
+                        android:src="@drawable/play"
+                        android:background="#00ffffff"
+                        android:scaleType="fitCenter" />
+
+                    <ImageButton
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/apNext"
+                        android:layout_weight="1"
+                        android:src="@drawable/rewind_b"
+                        android:background="#00ffffff"
+                        android:scaleType="fitCenter" />
+
+                    <ImageButton
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/apRepeat"
+                        android:layout_weight="1"
+                        android:src="@drawable/repeat"
+                        android:background="#00ffffff"
+                        android:scaleType="fitCenter" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/relativeLayout">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/apSeekBar"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="00:00"
+                            android:id="@+id/textView"
+                            android:layout_gravity="right"
+                            android:layout_marginLeft="10dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="04:25"
+                            android:id="@+id/textView2"
+                            android:layout_gravity="right"
+                            android:layout_alignBaseline="@+id/textView"
+                            android:layout_alignBottom="@+id/textView"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="false"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginEnd="10dp" />
+                    </RelativeLayout>
+
+                    <SeekBar
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/apSeekBar"
+                        android:indeterminate="false"
+                        android:layout_gravity="bottom"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginBottom="5dp" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
 
         </LinearLayout>
-    </LinearLayout>
+
+    </FrameLayout>
+
 </LinearLayout>
