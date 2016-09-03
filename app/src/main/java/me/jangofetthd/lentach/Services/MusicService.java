@@ -13,6 +13,10 @@ import com.vk.sdk.api.model.VKApiAudio;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by JangoFettHD on 02.09.2016.
@@ -33,6 +37,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private int songPos;
     private final IBinder musicBind = new MusicBinder();
 
+
+    private ScheduledExecutorService scheduledExecutorService;
 
     private TimeSynchronizationHandler timeHandler;
 
@@ -101,9 +107,6 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     }
 
     public void resume() {
-        if (timeHandler != null){
-            timeHandler.OnTimePlayerSynchronizationHandler(player.getCurrentPosition()/1000, player.getDuration()/1000);
-        }
         player.start();
     }
 
@@ -111,11 +114,15 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         return songs.get(songPos);
     }
 
-    public void setProgress(int progress) {
-        if (player.isPlaying()) {
-            player.seekTo(progress*1000);
+    public void setProgress(int progress, boolean percents) {
+        if (player.isPlaying() && progress >= 0) {
+            if (percents && progress <= 100)
+                player.seekTo(player.getDuration() * progress / 100);
+            else
+                player.seekTo(progress * 1000);
         }
     }
+
 
     public void initMusicPlayer() {
         player.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
@@ -138,11 +145,18 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     public void setTimeSynchronizationHandler(TimeSynchronizationHandler timeHandler) {
         this.timeHandler = timeHandler;
+        if (scheduledExecutorService == null)
+            scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        scheduledExecutorService.scheduleAtFixedRate((Runnable) () -> {
+            if (player.isPlaying() && player.getDuration() != 0) {
+                timeHandler.OnTimePlayerSynchronizationHandler(player.getCurrentPosition(), player.getDuration());
+            }
+        }, 0, 500, TimeUnit.MILLISECONDS);
     }
 
     //----------------------------
 
-    interface TimeSynchronizationHandler {
+    public interface TimeSynchronizationHandler {
         void OnTimePlayerSynchronizationHandler(int songTimePosition, int songDuration);
     }
 }

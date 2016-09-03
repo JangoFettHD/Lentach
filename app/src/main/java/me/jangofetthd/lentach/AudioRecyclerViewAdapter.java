@@ -3,6 +3,7 @@ package me.jangofetthd.lentach;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -12,6 +13,9 @@ import android.widget.TextView;
 import com.vk.sdk.api.model.VKApiAudio;
 
 import java.util.List;
+import java.util.Locale;
+
+import me.jangofetthd.lentach.Services.MusicService;
 
 /**
  * Created by JangoFettHD on 31.08.2016.
@@ -40,9 +44,9 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
         holder.mPlay.setImageResource(R.drawable.play);
         holder.mTitle.setText(audio.artist + " - " + audio.title);
         holder.mTime.setText(audio.duration / 60 + ":" + audio.duration % 60);
+        MainActivity activity = (MainActivity) context;
         holder.mPlay.setOnClickListener(view -> {
             try {
-                MainActivity activity = (MainActivity) context;
                 if (activity.vkAudios.size() == 0 || activity.musicService.getPlayingSong().getId() != audio.getId()) {
                     activity.vkAudios.clear();
                     activity.vkAudios.add(audio);
@@ -62,6 +66,15 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        });
+        activity.musicService.setTimeSynchronizationHandler((songTimePosition, songDuration) -> {
+            holder.mSeekBar.setProgress((int) ((float) (songDuration / songTimePosition) * 100));
+            holder.mTime.setText(String.format(Locale.ENGLISH, "%d:%d/%d:%d", songTimePosition / 60,
+                    songTimePosition % 60, songDuration / 60, songDuration % 60));
+        });
+        holder.mSeekBar.setOnTouchListener((view, motionEvent) -> {
+            activity.musicService.setProgress(holder.mSeekBar.getProgress(), true);
+            return false;
         });
     }
 
