@@ -18,7 +18,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/apImage"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/artworks_000179307911_7i2ens_t500x500"
+                android:src="@drawable/mini_audio"
                 android:scaleType="centerCrop" />
         </FrameLayout>
 
