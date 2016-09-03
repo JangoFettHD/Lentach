@@ -41,12 +41,13 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final VKApiAudio audio = audios.get(position);
 
-        holder.mPlay.setImageResource(R.drawable.play);
+        //holder.mPlay.setImageResource(R.drawable.play);
         holder.mTitle.setText(audio.title);
         holder.mArtist.setText(audio.artist);
+
         holder.mTime.setText(String.format(Locale.ENGLISH, "%d:%d", audio.duration / 60, audio.duration % 60));
         MainActivity activity = (MainActivity) context;
-        holder.mPlay.setOnClickListener(view -> {
+        /*holder.mPlay.setOnClickListener(view -> {
             try {
                 if (activity.vkAudios.size() == 0 || activity.musicService.getPlayingSong().getId() != audio.getId()) {
                     activity.vkAudios.clear();
@@ -66,8 +67,8 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        });
-        try {
+        });*/
+        /*try {
             if (audio.getId() == activity.musicService.getPlayingSong().getId()) {
                 holder.mPlay.setImageResource(R.drawable.pause);
             } else {
@@ -75,7 +76,7 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
             }
         } catch (Exception e) {
 
-        }
+        }*/
     }
 
     @Override

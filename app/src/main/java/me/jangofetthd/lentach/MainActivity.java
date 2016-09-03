@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity
     private Intent playIntent;
     private boolean musicBound = false;
 
+    public static MainActivity instance;
+
     ArrayList<VKApiAudio> vkAudios = new ArrayList<>();
 
 
@@ -110,6 +112,8 @@ public class MainActivity extends AppCompatActivity
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
             startService(playIntent);
         }
+
+        instance = this;
     }
 
     @Override
@@ -118,10 +122,10 @@ public class MainActivity extends AppCompatActivity
         //navigationView.getMenu().getItem(0).setTitle();
         if (VKSdk.isLoggedIn()) {
             //vk.setText("Выйти");
-            navigationView.getMenu().getItem(1).getSubMenu().getItem(0).setTitle("Выйти");
+            navigationView.getMenu().getItem(2).getSubMenu().getItem(0).setTitle("Выйти");
         } else {
             //vk.setText("Войти");
-            navigationView.getMenu().getItem(1).getSubMenu().getItem(0).setTitle("Войти");
+            navigationView.getMenu().getItem(2).getSubMenu().getItem(0).setTitle("Войти");
         }
     }
 
@@ -183,6 +187,9 @@ public class MainActivity extends AppCompatActivity
             }
         } else if (id == R.id.nav_send) {
 
+        } else if (id == R.id.nav_audio){
+            Intent goAudio = new Intent(this, AudioPlayerActivity.class);
+            startActivity(goAudio);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

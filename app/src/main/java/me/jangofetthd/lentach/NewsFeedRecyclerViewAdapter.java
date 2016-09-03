@@ -38,6 +38,7 @@ import java.util.Date;
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import me.jangofetthd.lentach.Utility.ItemClickSupport;
 
 public class NewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<NewsFeedRecyclerViewAdapter.ViewHolder> implements View.OnClickListener {
 
@@ -117,6 +118,7 @@ public class NewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<NewsFeedRe
                 holder.pImagesScroll.setLayoutParams(params);
             }
         }
+        MainActivity activity = (MainActivity) context;
         if (audios.isEmpty()) {
             holder.pAudiosRecyclerView.setVisibility(View.GONE);
         } else {
@@ -126,6 +128,19 @@ public class NewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<NewsFeedRe
 
             AudioRecyclerViewAdapter adapter = new AudioRecyclerViewAdapter(audios, context);
             holder.pAudiosRecyclerView.setAdapter(adapter);
+
+            ItemClickSupport.addTo(holder.pAudiosRecyclerView).setOnItemClickListener((recyclerView, position1, v) -> {
+                if (activity.musicService.getPlayingSong().getId() != audios.get(position1).getId()) {
+                    activity.vkAudios.clear();
+                    activity.vkAudios.addAll(audios);
+                    activity.musicService.setSong(position1);
+                    activity.musicService.playSong();
+                } else {
+                    activity.musicService.pause();
+                }
+                recyclerView.getAdapter().notifyDataSetChanged();
+            });
+
         }
         if (documents.isEmpty()) {
             holder.pGifsScroll.setVisibility(View.GONE);

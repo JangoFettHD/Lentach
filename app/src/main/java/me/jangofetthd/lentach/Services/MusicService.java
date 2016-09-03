@@ -5,11 +5,10 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.Nullable;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.vk.sdk.api.model.VKApiAudio;
 
@@ -38,6 +37,9 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private int songPos;
     private final IBinder musicBind = new MusicBinder();
     private AudioChangedHandler audioChangedHandler;
+
+
+    OnScheduledUpdatesHandler updatesHandler;
 
     //---------------------------
 
@@ -122,7 +124,9 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     }
 
     public VKApiAudio getPlayingSong() {
-        return songs.get(songPos);
+        if (songPos<songs.size())
+            return songs.get(songPos);
+        return new VKApiAudio();
     }
 
     public void setProgress(int progress, boolean percents) {
@@ -171,9 +175,24 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         this.audioChangedHandler = handler;
     }
 
+    public void setOnSchelduedUpdatesHandler(OnScheduledUpdatesHandler handler) {
+        this.updatesHandler = handler;
+        Handler lol = new Handler();
+        ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+        service.scheduleWithFixedDelay((Runnable) () -> {
+            if (isPlaying())
+                lol.post(() -> updatesHandler.OnScheduledHandler(player.getCurrentPosition()/1000, player.getDuration()/1000));
+
+        }, 0, 500, TimeUnit.MILLISECONDS);
+    }
+
     //----------------------------
 
     public interface AudioChangedHandler {
         void OnAudioChangedHandler(VKApiAudio oldAudio, VKApiAudio newAudio);
+    }
+
+    public interface OnScheduledUpdatesHandler {
+        void OnScheduledHandler(int songPosition, int songDuration);
     }
 }
