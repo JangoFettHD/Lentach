@@ -1,9 +1,9 @@
 package me.jangofetthd.lentach;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -42,8 +42,9 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
         final VKApiAudio audio = audios.get(position);
 
         holder.mPlay.setImageResource(R.drawable.play);
-        holder.mTitle.setText(audio.artist + " - " + audio.title);
-        holder.mTime.setText(audio.duration / 60 + ":" + audio.duration % 60);
+        holder.mTitle.setText(audio.title);
+        holder.mArtist.setText(audio.artist);
+        holder.mTime.setText(String.format(Locale.ENGLISH, "%d:%d", audio.duration / 60, audio.duration % 60));
         MainActivity activity = (MainActivity) context;
         holder.mPlay.setOnClickListener(view -> {
             try {
@@ -62,20 +63,19 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
                         holder.mPlay.setImageResource(R.drawable.pause);
                     }
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-        activity.musicService.setTimeSynchronizationHandler((songTimePosition, songDuration) -> {
-            holder.mSeekBar.setProgress((int) ((float) (songDuration / songTimePosition) * 100));
-            holder.mTime.setText(String.format(Locale.ENGLISH, "%d:%d/%d:%d", songTimePosition / 60,
-                    songTimePosition % 60, songDuration / 60, songDuration % 60));
-        });
-        holder.mSeekBar.setOnTouchListener((view, motionEvent) -> {
-            activity.musicService.setProgress(holder.mSeekBar.getProgress(), true);
-            return false;
-        });
+        try {
+            if (audio.getId() == activity.musicService.getPlayingSong().getId()) {
+                holder.mPlay.setImageResource(R.drawable.pause);
+            } else {
+                holder.mPlay.setImageResource(R.drawable.play);
+            }
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
@@ -87,14 +87,14 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
 
         private TextView mTime;
         private TextView mTitle;
-        private SeekBar mSeekBar;
+        private TextView mArtist;
         private ImageButton mPlay;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mTime = (TextView) itemView.findViewById(R.id.mTime);
             mTitle = (TextView) itemView.findViewById(R.id.mTitle);
-            mSeekBar = (SeekBar) itemView.findViewById(R.id.mSeekBar);
+            mArtist = (TextView) itemView.findViewById(R.id.mArtist);
             mPlay = (ImageButton) itemView.findViewById(R.id.mPlay);
         }
     }

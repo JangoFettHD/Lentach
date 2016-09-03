@@ -8,12 +8,13 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.Nullable;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.vk.sdk.api.model.VKApiAudio;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -36,11 +37,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
      */
     private int songPos;
     private final IBinder musicBind = new MusicBinder();
-
-
-    private ScheduledExecutorService scheduledExecutorService;
-
-    private TimeSynchronizationHandler timeHandler;
+    private AudioChangedHandler audioChangedHandler;
 
     //---------------------------
 
@@ -110,6 +107,20 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         player.start();
     }
 
+    public void next() {
+        audioChangedHandler.OnAudioChangedHandler(songs.get(songPos), songs.get(++songPos));
+        if (songPos >= songs.size())
+            songPos = 0;
+        playSong();
+    }
+
+    public void prev() {
+        audioChangedHandler.OnAudioChangedHandler(songs.get(songPos), songs.get(--songPos));
+        if (songPos < 0)
+            songPos = songs.size() - 1;
+        playSong();
+    }
+
     public VKApiAudio getPlayingSong() {
         return songs.get(songPos);
     }
@@ -123,6 +134,19 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         }
     }
 
+    public int getAudioDuration() {
+        if (player.isPlaying()) {
+            return player.getDuration() / 1000;
+        }
+        return -1;
+    }
+
+    public int getAudioPosition() {
+        if (player.isPlaying()) {
+            return player.getCurrentPosition() / 1000;
+        }
+        return -1;
+    }
 
     public void initMusicPlayer() {
         player.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
@@ -143,20 +167,13 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         }
     }
 
-    public void setTimeSynchronizationHandler(TimeSynchronizationHandler timeHandler) {
-        this.timeHandler = timeHandler;
-        if (scheduledExecutorService == null)
-            scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        scheduledExecutorService.scheduleAtFixedRate((Runnable) () -> {
-            if (player.isPlaying() && player.getDuration() != 0) {
-                timeHandler.OnTimePlayerSynchronizationHandler(player.getCurrentPosition(), player.getDuration());
-            }
-        }, 0, 500, TimeUnit.MILLISECONDS);
+    public void setAudioChangedHandler(AudioChangedHandler handler) {
+        this.audioChangedHandler = handler;
     }
 
     //----------------------------
 
-    public interface TimeSynchronizationHandler {
-        void OnTimePlayerSynchronizationHandler(int songTimePosition, int songDuration);
+    public interface AudioChangedHandler {
+        void OnAudioChangedHandler(VKApiAudio oldAudio, VKApiAudio newAudio);
     }
 }

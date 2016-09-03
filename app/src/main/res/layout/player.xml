@@ -12,45 +12,51 @@
         android:scaleType="fitCenter"
         android:src="@drawable/play" />
 
-    <SeekBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/mSeekBar"
-        android:layout_toRightOf="@+id/mPlay"
-        android:layout_alignBottom="@+id/mPlay"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="7dp"
-        android:indeterminate="false"
-        android:layout_below="@+id/mTime"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="-10dp" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:text="10:15"
         android:id="@+id/mTime"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/mSeekBar"
-        android:layout_alignEnd="@+id/mSeekBar"
         android:gravity="center_vertical"
-        android:layout_marginTop="5dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:text="Noize MC - Lenin Has Risen (OST LOLOLOLLOOLOLOLO)"
-        android:id="@+id/mTitle"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="0dp"
-        android:layout_toLeftOf="@+id/mTime"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/mPlay"
         android:layout_toEndOf="@+id/mPlay"
-        android:layout_marginLeft="0dp"
-        android:gravity="center_vertical"
-        android:singleLine="false"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="50dp"
-        android:lines="2" />
+        android:id="@+id/linearLayout"
+        android:layout_marginRight="40dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="Lenin Has Risen (OST LOLOLOLLOOLOLOLO)"
+            android:id="@+id/mTitle"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:lines="2"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/mPlay"
+            android:layout_toEndOf="@+id/mPlay"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/colorText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="Noize MC"
+            android:id="@+id/mArtist"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:lines="2"
+            android:layout_below="@+id/mTime"
+            android:layout_toRightOf="@+id/mPlay"
+            android:layout_toEndOf="@+id/mPlay"
+            android:textColor="#83432559" />
+    </LinearLayout>
+
 </RelativeLayout>
